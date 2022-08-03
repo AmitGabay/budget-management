@@ -3,20 +3,23 @@ import { NavLink } from "react-router-dom";
 import style from "./Navbar.module.css";
 
 const Navbar = () => {
-  const activeClassName = style.selected;
-
   return (
     <div className={style.navbar}>
       <p>Budget Managment</p>
       <NavLink
         to={"/"}
-        className={`${({ isActive }) => isActive && activeClassName} ${
-          style.text
-        }`}
+        className={({ isActive }) =>
+          `${style.text} ${isActive ? style.selected : ""}`
+        }
       >
         Daily
       </NavLink>
-      <NavLink to={"/month"} className={style.text}>
+      <NavLink
+        to={"/month"}
+        className={({ isActive }) =>
+          `${style.text} ${isActive ? style.selected : ""}`
+        }
+      >
         Monthly
       </NavLink>
     </div>
