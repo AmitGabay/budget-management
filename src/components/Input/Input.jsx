@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import style from "./Input.module.css";
+
 const Input = ({ setData }) => {
   const [Input, setInput] = useState({
     sum: "",
@@ -21,7 +23,7 @@ const Input = ({ setData }) => {
   };
 
   return (
-    <div>
+    <div className={style.inputs}>
       <input
         type="text"
         name="sum"
@@ -43,7 +45,11 @@ const Input = ({ setData }) => {
         placeholder="Category"
         onChange={onChange}
       ></input>
-      <button onClick={onSubmit}>V</button>
+      {document.addEventListener("keypress", (e) => {
+        if (e.keyCode === 13) {
+          onSubmit();
+        }
+      })}
     </div>
   );
 };

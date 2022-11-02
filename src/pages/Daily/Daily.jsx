@@ -1,20 +1,24 @@
 import React, { useState } from "react";
+
 import Table from "../../components/Table/Table";
 import Input from "../../components/Input/Input";
+
+import style from "./Daily.module.css";
 
 const Daily = () => {
   const current = new Date();
   const date = `${current.getDate()}/${
     current.getMonth() + 1
   }/${current.getFullYear()}`;
-  const [add, setAdd] = useState(true);
+
   const [data, setData] = useState([
     {
-      sum: 500,
+      sum: "500",
       card: "hever",
       category: "food",
     },
   ]);
+
   const columns = [
     {
       Header: "Sum",
@@ -30,17 +34,12 @@ const Daily = () => {
     },
   ];
 
-  const onClick = () => {
-    setAdd(!add);
-  };
-
   return (
-    <div>
-      <h2>Summary of expenses</h2>
+    <div className={style.container}>
+      <h2>Summary of Expenses</h2>
       <h3>{date}</h3>
       <Table columns={columns} data={data} />
-      {!add && <Input setData={setData} />}
-      <button onClick={onClick}>{add ? "(+)" : "(-)"}</button>
+      <Input setData={setData} />
     </div>
   );
 };

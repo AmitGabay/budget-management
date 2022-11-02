@@ -4,6 +4,8 @@ import Navbar from "./components/Navbar/Navbar";
 import Daily from "./pages/Daily/Daily";
 import Monthly from "./pages/Monthly/Monthly";
 
+import "./App.module.css";
+
 function App() {
   return (
     <div className="App">
