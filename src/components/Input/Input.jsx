@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import style from "./Input.module.css";
 
-const Input = ({ setData }) => {
-  const [Input, setInput] = useState({
+const Input = ({ data, setData }) => {
+  const [inputs, setInputs] = useState({
     sum: "",
     card: "",
     category: "",
@@ -11,11 +11,11 @@ const Input = ({ setData }) => {
 
   const onChange = (event) => {
     const { name, value } = event.target;
-    setInput((prevState) => ({ ...prevState, [name]: value }));
+    setInputs((prevState) => ({ ...prevState, [name]: value }));
   };
   const onSubmit = () => {
-    setData((prevValue) => [...prevValue, Input]);
-    setInput({
+    setData((prevValue) => [...prevValue, inputs]);
+    setInputs({
       sum: "",
       card: "",
       category: "",
@@ -27,29 +27,29 @@ const Input = ({ setData }) => {
       <input
         type="text"
         name="sum"
-        value={Input.sum}
+        value={inputs.sum}
         placeholder="Sum"
         onChange={onChange}
       ></input>
       <input
         type="text"
         name="card"
-        value={Input.card}
+        value={inputs.card}
         placeholder="Card"
         onChange={onChange}
       ></input>
       <input
         type="text"
         name="category"
-        value={Input.category}
+        value={inputs.category}
         placeholder="Category"
         onChange={onChange}
+        onKeyDown={(e) => {
+          if (e.keyCode === 13) {
+            onSubmit();
+          }
+        }}
       ></input>
-      {document.addEventListener("keypress", (e) => {
-        if (e.keyCode === 13) {
-          onSubmit();
-        }
-      })}
     </div>
   );
 };

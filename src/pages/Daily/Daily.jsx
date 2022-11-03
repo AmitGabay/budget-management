@@ -39,7 +39,7 @@ const Daily = () => {
       <h2>Summary of Expenses</h2>
       <h3>{date}</h3>
       <Table columns={columns} data={data} />
-      <Input setData={setData} />
+      <Input data={data} setData={setData} />
     </div>
   );
 };
