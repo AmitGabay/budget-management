@@ -2,9 +2,9 @@ import { NavLink } from "react-router-dom";
 
 import style from "./Navbar.module.css";
 
-const Navbar = () => {
+const Navbar = ({ userLoggedIn, logout }) => {
   return (
-    <div className={style.navbar}>
+    <nav className={style.navbar}>
       <p>Budget Managment</p>
       <NavLink
         to={"/"}
@@ -22,7 +22,8 @@ const Navbar = () => {
       >
         Monthly
       </NavLink>
-    </div>
+      {userLoggedIn && <button onClick={logout}>Logout</button>}
+    </nav>
   );
 };
 

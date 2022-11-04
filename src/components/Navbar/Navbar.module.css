@@ -22,3 +22,12 @@
 .selected {
   opacity: 1;
 }
+
+.navbar button {
+  margin: auto 5px auto auto;
+  border-radius: 4px;
+  border: 2px solid black;
+  background-color: transparent;
+  padding: 5px 10px;
+  cursor: pointer;
+}

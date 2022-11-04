@@ -1,23 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 
 import Table from "../../components/Table/Table";
 import Input from "../../components/Input/Input";
 
 import style from "./Daily.module.css";
 
-const Daily = () => {
+const Daily = ({ data, setData }) => {
   const current = new Date();
   const date = `${current.getDate()}/${
     current.getMonth() + 1
   }/${current.getFullYear()}`;
-
-  const [data, setData] = useState([
-    {
-      sum: "500",
-      card: "hever",
-      category: "food",
-    },
-  ]);
 
   const columns = [
     {
