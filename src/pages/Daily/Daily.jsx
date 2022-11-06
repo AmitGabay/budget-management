@@ -5,12 +5,7 @@ import Input from "../../components/Input/Input";
 
 import style from "./Daily.module.css";
 
-const Daily = ({ data, setData }) => {
-  const current = new Date();
-  const date = `${current.getDate()}/${
-    current.getMonth() + 1
-  }/${current.getFullYear()}`;
-
+const Daily = ({ date, data, setData }) => {
   const columns = [
     {
       Header: "Sum",
@@ -31,7 +26,7 @@ const Daily = ({ data, setData }) => {
       <h2>Summary of Expenses</h2>
       <h3>{date}</h3>
       <Table columns={columns} data={data} />
-      <Input data={data} setData={setData} />
+      <Input date={date} data={data} setData={setData} />
     </div>
   );
 };

@@ -49,7 +49,6 @@ const Login = ({ setUserLoggedIn }) => {
     <div className={style.login}>
       <div className={style.container}>
         <div className={style.header}>
-          <h5>Hello!</h5>
           <h2 className={style.name}>{mode}</h2>
 
           <div className={style.icon}></div>

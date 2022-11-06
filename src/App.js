@@ -10,6 +10,11 @@ import Monthly from "./pages/Monthly/Monthly";
 import "./App.module.css";
 
 function App() {
+  const current = new Date();
+
+  const [date, setDate] = useState(
+    `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`
+  );
   const [data, setData] = useState([]);
   const [userLoggedIn, setUserLoggedIn] = useState(Boolean(localStorage.user));
 
@@ -17,9 +22,11 @@ function App() {
     if (!userLoggedIn) return;
 
     const getData = async () => {
-      const { data } = await axios(`${process.env.REACT_APP_SERVER_URL}/`);
-
-      setData(data);
+      const { data: expenses } = await axios(
+        `${process.env.REACT_APP_SERVER_URL}/`
+      );
+      setDate(expenses.date);
+      setData(expenses.data);
     };
 
     getData();
@@ -36,7 +43,10 @@ function App() {
       <Navbar userLoggedIn={userLoggedIn} logout={logout} />
       {userLoggedIn ? (
         <Routes>
-          <Route path="/" element={<Daily data={data} setData={setData} />} />
+          <Route
+            path="/"
+            element={<Daily date={date} data={data} setData={setData} />}
+          />
           <Route path="/month" element={<Monthly />} />
         </Routes>
       ) : (

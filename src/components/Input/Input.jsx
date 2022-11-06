@@ -1,8 +1,9 @@
 import { useState } from "react";
+import axios from "axios";
 
 import style from "./Input.module.css";
 
-const Input = ({ data, setData }) => {
+const Input = ({ date, data, setData }) => {
   const [inputs, setInputs] = useState({
     sum: "",
     card: "",
@@ -14,7 +15,13 @@ const Input = ({ data, setData }) => {
     setInputs((prevState) => ({ ...prevState, [name]: value }));
   };
   const onSubmit = () => {
-    setData((prevValue) => [...prevValue, inputs]);
+    const updatedData = [...data, inputs];
+    setData(updatedData);
+
+    axios.post(`${process.env.REACT_APP_SERVER_URL}/`, {
+      expenses: { date: date, data: updatedData },
+    });
+    // setData((prevValue) => [...prevValue, inputs]);
     setInputs({
       sum: "",
       card: "",
