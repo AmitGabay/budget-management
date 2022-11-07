@@ -10,27 +10,13 @@ import Monthly from "./pages/Monthly/Monthly";
 import "./App.module.css";
 
 function App() {
-  const current = new Date();
+  const day = new Date().toLocaleDateString("de-DE");
 
-  const [date, setDate] = useState(
-    `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`
-  );
-  const [data, setData] = useState([]);
+  // const [day, setDay] = useState(
+  //   `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`
+  // );
+
   const [userLoggedIn, setUserLoggedIn] = useState(Boolean(localStorage.user));
-
-  useEffect(() => {
-    if (!userLoggedIn) return;
-
-    const getData = async () => {
-      const { data: expenses } = await axios(
-        `${process.env.REACT_APP_SERVER_URL}/`
-      );
-      setDate(expenses.date);
-      setData(expenses.data);
-    };
-
-    getData();
-  }, [userLoggedIn]);
 
   const logout = () => {
     setUserLoggedIn(false);
@@ -45,9 +31,12 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={<Daily date={date} data={data} setData={setData} />}
+            element={<Daily userLoggedIn={userLoggedIn} day={day} />}
           />
-          <Route path="/month" element={<Monthly />} />
+          <Route
+            path="/month"
+            element={<Monthly userLoggedIn={userLoggedIn} />}
+          />
         </Routes>
       ) : (
         <Login userLoggedIn={userLoggedIn} setUserLoggedIn={setUserLoggedIn} />
