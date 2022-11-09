@@ -10,7 +10,7 @@ import Monthly from "./pages/Monthly/Monthly";
 import "./App.module.css";
 
 function App() {
-  const day = new Date().toLocaleDateString("de-DE");
+  const day = new Date();
 
   // const [day, setDay] = useState(
   //   `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`
@@ -35,7 +35,7 @@ function App() {
           />
           <Route
             path="/month"
-            element={<Monthly userLoggedIn={userLoggedIn} />}
+            element={<Monthly userLoggedIn={userLoggedIn} day={day} />}
           />
         </Routes>
       ) : (

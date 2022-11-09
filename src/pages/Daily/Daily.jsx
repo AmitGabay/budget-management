@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 import Table from "../../components/Table/Table";
 import Input from "../../components/Input/Input";
@@ -24,6 +25,10 @@ const Daily = ({ userLoggedIn, day }) => {
     },
   ];
 
+  const dayBack = new Date(day.setDate(day.getDate() - 1)).toLocaleDateString(
+    "de-DE"
+  );
+
   useEffect(() => {
     if (!userLoggedIn) return;
 
@@ -32,7 +37,10 @@ const Daily = ({ userLoggedIn, day }) => {
         `${process.env.REACT_APP_SERVER_URL}/`
       );
       setExpenses(expenses);
-      const expense = expenses.find(({ date }) => date === day);
+      const expense = expenses.find(({ date }) => {
+        const dbDate = new Date(date).toDateString();
+        return dbDate === day.toDateString();
+      });
       setData(expense.data);
     };
 
@@ -42,9 +50,12 @@ const Daily = ({ userLoggedIn, day }) => {
   return (
     <div className={style.container}>
       <h2>Summary of Expenses</h2>
-      <h3>{day}</h3>
+      <h3>{day.toLocaleDateString("de-DE")}</h3>
       <Table columns={columns} data={data} />
       <Input day={day} expenses={expenses} data={data} setData={setData} />
+      <Link to={`/${dayBack}`}>
+        <span>{dayBack}</span>
+      </Link>
     </div>
   );
 };

@@ -5,11 +5,10 @@ import Table from "../../components/Table/Table";
 
 import style from "./Monthly.module.css";
 
-const Monthly = ({ userLoggedIn, current }) => {
-  const month = new Intl.DateTimeFormat("en-US", { month: "long" }).format(
-    current
-  );
+const Monthly = ({ userLoggedIn, day }) => {
+  const month = new Intl.DateTimeFormat("en-US", { month: "long" }).format(day);
 
+  const [rawData, setRawData] = useState([]);
   const [data, setData] = useState([]);
   const [expenses, setExpenses] = useState([]);
 
@@ -24,6 +23,11 @@ const Monthly = ({ userLoggedIn, current }) => {
     },
   ];
 
+  const makeSum = () => {
+    const sum = rawData;
+    setData(sum);
+  };
+
   useEffect(() => {
     if (!userLoggedIn) return;
 
@@ -34,11 +38,10 @@ const Monthly = ({ userLoggedIn, current }) => {
       setExpenses(expenses);
       const expense = expenses.find(({ date }) => {
         const dbDate = new Date(date);
-        console.log(date, dbDate.getMonth(), current);
-        return dbDate.getMonth() === current.getMonth();
+        return dbDate.getMonth() === day.getMonth();
       });
-      setData(expense.data);
-      console.log(data);
+      setRawData(expense.data);
+      makeSum();
     };
 
     getData();
