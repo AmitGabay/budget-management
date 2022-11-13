@@ -24,10 +24,10 @@ const Daily = ({ userLoggedIn, day }) => {
       accessor: "category",
     },
   ];
-
-  const dayBack = new Date(day.setDate(day.getDate() - 1)).toLocaleDateString(
-    "de-DE"
-  );
+  const changeDay = new Date(day.toISOString());
+  const dayBack = new Date(
+    changeDay.setDate(changeDay.getDate() - 1)
+  ).toLocaleDateString("de-DE");
 
   useEffect(() => {
     if (!userLoggedIn) return;

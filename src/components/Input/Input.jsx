@@ -17,11 +17,16 @@ const Input = ({ expenses, day, data, setData }) => {
   const onSubmit = () => {
     const updatedData = [...data, inputs];
     setData(updatedData);
-    // const updastedExpenses = [...expenses, { date: date, data: updatedData }];
-    axios.post(`${process.env.REACT_APP_SERVER_URL}/`, {
-      expenses: [{ date: day, data: updatedData }],
-    });
-    // setData((prevValue) => [...prevValue, inputs]);
+    if (!expenses.length) {
+      axios.post(`${process.env.REACT_APP_SERVER_URL}/daily`, {
+        expenses: [{ date: day, data: updatedData }],
+      });
+    } else {
+      axios.put(`${process.env.REACT_APP_SERVER_URL}/daily`, {
+        date: day,
+        data: updatedData,
+      });
+    }
     setInputs({
       sum: "",
       card: "",

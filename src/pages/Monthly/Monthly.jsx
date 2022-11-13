@@ -24,7 +24,13 @@ const Monthly = ({ userLoggedIn, day }) => {
   ];
 
   const makeSum = () => {
-    const sum = rawData;
+    let sum = rawData.sort();
+    let i = 0;
+    while (sum.length !== 0) {
+      if (sum[i].card === sum[i + 1].card) {
+      }
+    }
+    console.log(rawData);
     setData(sum);
   };
 
