@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import Table from "../../components/Table/Table";
 import Input from "../../components/Input/Input";
@@ -24,10 +24,12 @@ const Daily = ({ userLoggedIn, day }) => {
       accessor: "category",
     },
   ];
+  const { pick } = useParams();
+  if (pick) {
+    day = new Date(pick);
+  }
   const changeDay = new Date(day.toISOString());
-  const dayBack = new Date(
-    changeDay.setDate(changeDay.getDate() - 1)
-  ).toLocaleDateString("de-DE");
+  const dayBack = new Date(changeDay.setDate(changeDay.getDate() - 1));
 
   useEffect(() => {
     if (!userLoggedIn) return;
@@ -41,11 +43,11 @@ const Daily = ({ userLoggedIn, day }) => {
         const dbDate = new Date(date).toDateString();
         return dbDate === day.toDateString();
       });
-      setData(expense.data);
+      setData(expense ? expense.data : []);
     };
 
     getData();
-  }, [userLoggedIn]);
+  }, [userLoggedIn, pick]);
 
   return (
     <div className={style.container}>
@@ -53,8 +55,8 @@ const Daily = ({ userLoggedIn, day }) => {
       <h3>{day.toLocaleDateString("de-DE")}</h3>
       <Table columns={columns} data={data} />
       <Input day={day} expenses={expenses} data={data} setData={setData} />
-      <Link to={`/${dayBack}`}>
-        <span>{dayBack}</span>
+      <Link to={`/${dayBack.toISOString()}`}>
+        <span>{dayBack.toLocaleDateString("de-DE")}</span>
       </Link>
     </div>
   );

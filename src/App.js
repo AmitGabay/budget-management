@@ -37,6 +37,14 @@ function App() {
             path="/month"
             element={<Monthly userLoggedIn={userLoggedIn} day={day} />}
           />
+          <Route
+            path="/:pick"
+            element={<Daily userLoggedIn={userLoggedIn} />}
+          />
+          <Route
+            path="/month/:pick"
+            element={<Monthly userLoggedIn={userLoggedIn} />}
+          />
         </Routes>
       ) : (
         <Login userLoggedIn={userLoggedIn} setUserLoggedIn={setUserLoggedIn} />

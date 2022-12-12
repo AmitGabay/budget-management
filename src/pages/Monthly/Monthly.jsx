@@ -1,16 +1,43 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Link, useParams } from "react-router-dom";
 
 import Table from "../../components/Table/Table";
 
 import style from "./Monthly.module.css";
 
-const Monthly = ({ userLoggedIn, day }) => {
-  const month = new Intl.DateTimeFormat("en-US", { month: "long" }).format(day);
+const makeSum = (expenses, mode) => {
+  const cardsMap = expenses.reduce((acc, expense) => {
+    if (acc[expense[mode]]) acc[expense[mode]] += expense.sum;
+    else acc[expense[mode]] = expense.sum;
 
-  const [rawData, setRawData] = useState([]);
+    return acc;
+  }, {});
+
+  const groupedExpenses = [];
+
+  for (const mode in cardsMap) {
+    groupedExpenses.push({ mode, sum: cardsMap[mode] });
+  }
+  return groupedExpenses;
+};
+
+const Monthly = ({ userLoggedIn, day }) => {
+  const { pick } = useParams();
+  if (pick) {
+    day = new Date(`${pick} "1, 2022"`);
+  }
+  const changeMonth = new Date(day).setMonth(day.getMonth() - 1);
+  const monthBack = new Intl.DateTimeFormat("en-US", { month: "long" }).format(
+    changeMonth
+  );
+
+  const option = { month: "long" };
+  const month = new Intl.DateTimeFormat("en-US", option).format(day);
+
   const [data, setData] = useState([]);
   const [expenses, setExpenses] = useState([]);
+  const [mode, setMode] = useState("Card");
 
   const columns = [
     {
@@ -18,20 +45,17 @@ const Monthly = ({ userLoggedIn, day }) => {
       accessor: "sum",
     },
     {
-      Header: "Card",
-      accessor: "card",
+      Header: mode,
+      accessor: "mode",
     },
   ];
 
-  const makeSum = () => {
-    let sum = rawData.sort();
-    let i = 0;
-    while (sum.length !== 0) {
-      if (sum[i].card === sum[i + 1].card) {
-      }
+  const changeMode = () => {
+    if (mode === "Card") {
+      setMode("Category");
+    } else {
+      setMode("Card");
     }
-    console.log(rawData);
-    setData(sum);
   };
 
   useEffect(() => {
@@ -42,22 +66,28 @@ const Monthly = ({ userLoggedIn, day }) => {
         `${process.env.REACT_APP_SERVER_URL}/`
       );
       setExpenses(expenses);
-      const expense = expenses.find(({ date }) => {
-        const dbDate = new Date(date);
-        return dbDate.getMonth() === day.getMonth();
-      });
-      setRawData(expense.data);
-      makeSum();
+      const expense = expenses
+        .filter(({ date }) => {
+          const dbDate = new Date(date);
+          return dbDate.getMonth() === day.getMonth();
+        })
+        .map(({ data }) => data)
+        .flat();
+      setData(makeSum(expense, mode.toLowerCase()));
     };
 
     getData();
-  }, [userLoggedIn]);
+  }, [userLoggedIn, mode, pick]);
 
   return (
     <div className={style.container}>
       <h2>Monthly Expense Summary of</h2>
-      <h3>{month}</h3>
+      <h3>{month} by</h3>
+      <h4 onClick={changeMode}>{mode}</h4>
       <Table columns={columns} data={data} />
+      <Link to={`/month/${monthBack}`}>
+        <span>{monthBack}</span>
+      </Link>
     </div>
   );
 };
