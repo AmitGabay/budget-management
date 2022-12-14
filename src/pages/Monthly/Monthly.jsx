@@ -27,10 +27,13 @@ const Monthly = ({ userLoggedIn, day }) => {
   if (pick) {
     day = new Date(`${pick} "1, 2022"`);
   }
-  const changeMonth = new Date(day).setMonth(day.getMonth() - 1);
+  // const changeMonth = new Date(day).setMonth(day.getMonth() - 1);
   const monthBack = new Intl.DateTimeFormat("en-US", { month: "long" }).format(
-    changeMonth
+    new Date(day).setMonth(day.getMonth() - 1)
   );
+  const monthForward = new Intl.DateTimeFormat("en-US", {
+    month: "long",
+  }).format(new Date(day).setMonth(day.getMonth() + 1));
 
   const option = { month: "long" };
   const month = new Intl.DateTimeFormat("en-US", option).format(day);
@@ -83,11 +86,18 @@ const Monthly = ({ userLoggedIn, day }) => {
     <div className={style.container}>
       <h2>Monthly Expense Summary of</h2>
       <h3>{month} by</h3>
-      <h4 onClick={changeMode}>{mode}</h4>
+      <h4 onClick={changeMode} className={style.mode}>
+        {mode}
+      </h4>
       <Table columns={columns} data={data} />
-      <Link to={`/month/${monthBack}`}>
-        <span>{monthBack}</span>
-      </Link>
+      <div className={style.flipping}>
+        <Link className={style.link} to={`/month/${monthBack}`}>
+          <span>{monthBack}</span>
+        </Link>
+        <Link className={style.link} to={`/month/${monthForward}`}>
+          <span>{monthForward}</span>
+        </Link>
+      </div>
     </div>
   );
 };

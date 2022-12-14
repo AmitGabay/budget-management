@@ -5,6 +5,17 @@
   margin-top: 30px;
 }
 
-h4 {
+.mode {
   margin: 5px;
+  cursor: pointer;
+}
+
+.flipping {
+  margin-top: 10px;
+  display: flex;
+  gap: 100px;
+}
+
+.link {
+  text-decoration: none;
 }

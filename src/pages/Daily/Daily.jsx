@@ -30,6 +30,7 @@ const Daily = ({ userLoggedIn, day }) => {
   }
   const changeDay = new Date(day.toISOString());
   const dayBack = new Date(changeDay.setDate(changeDay.getDate() - 1));
+  const dayForward = new Date(changeDay.setDate(changeDay.getDate() + 2));
 
   useEffect(() => {
     if (!userLoggedIn) return;
@@ -55,9 +56,14 @@ const Daily = ({ userLoggedIn, day }) => {
       <h3>{day.toLocaleDateString("de-DE")}</h3>
       <Table columns={columns} data={data} />
       <Input day={day} expenses={expenses} data={data} setData={setData} />
-      <Link to={`/${dayBack.toISOString()}`}>
-        <span>{dayBack.toLocaleDateString("de-DE")}</span>
-      </Link>
+      <div className={style.flipping}>
+        <Link className={style.link} to={`/${dayBack.toISOString()}`}>
+          <span>{dayBack.toLocaleDateString("de-DE")}</span>
+        </Link>
+        <Link className={style.link} to={`/${dayForward.toISOString()}`}>
+          <span>{dayForward.toLocaleDateString("de-DE")}</span>
+        </Link>
+      </div>
     </div>
   );
 };

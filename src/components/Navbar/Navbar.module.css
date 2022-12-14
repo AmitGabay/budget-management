@@ -9,7 +9,7 @@
 }
 
 .text {
-  text-decoration-line: none;
+  text-decoration: none;
   color: inherit;
   cursor: pointer;
   opacity: 0.6;

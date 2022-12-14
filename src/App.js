@@ -11,11 +11,6 @@ import "./App.module.css";
 
 function App() {
   const day = new Date();
-
-  // const [day, setDay] = useState(
-  //   `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`
-  // );
-
   const [userLoggedIn, setUserLoggedIn] = useState(Boolean(localStorage.user));
 
   const logout = () => {

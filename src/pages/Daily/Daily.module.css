@@ -4,3 +4,13 @@
   align-items: center;
   margin-top: 30px;
 }
+
+.flipping {
+  margin-top: 10px;
+  display: flex;
+  gap: 200px;
+}
+
+.link {
+  text-decoration: none;
+}

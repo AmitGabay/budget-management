@@ -15,6 +15,9 @@ const Input = ({ expenses, day, data, setData }) => {
     setInputs((prevState) => ({ ...prevState, [name]: value }));
   };
   const onSubmit = () => {
+    if (!inputs.sum.length || !inputs.card.length || !inputs.category.length)
+      return;
+
     const updatedData = [...data, inputs];
     setData(updatedData);
     if (!expenses.length) {
@@ -35,13 +38,22 @@ const Input = ({ expenses, day, data, setData }) => {
   };
 
   return (
-    <div className={style.inputs}>
+    <form
+      className={style.inputs}
+      onKeyDown={(e) => {
+        if (e.keyCode === 13) {
+          onSubmit();
+        }
+      }}
+      onSubmit={(e) => e.preventDefault()}
+    >
       <input
         type="text"
         name="sum"
         value={inputs.sum}
         placeholder="Sum"
         onChange={onChange}
+        required
       ></input>
       <input
         type="text"
@@ -49,6 +61,7 @@ const Input = ({ expenses, day, data, setData }) => {
         value={inputs.card}
         placeholder="Card"
         onChange={onChange}
+        required
       ></input>
       <input
         type="text"
@@ -56,13 +69,10 @@ const Input = ({ expenses, day, data, setData }) => {
         value={inputs.category}
         placeholder="Category"
         onChange={onChange}
-        onKeyDown={(e) => {
-          if (e.keyCode === 13) {
-            onSubmit();
-          }
-        }}
+        required
       ></input>
-    </div>
+      <button>submit</button>
+    </form>
   );
 };
 
