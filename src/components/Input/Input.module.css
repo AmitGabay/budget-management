@@ -10,6 +10,6 @@ input {
   height: 20px;
 }
 
-button {
+.submit {
   display: none;
 }

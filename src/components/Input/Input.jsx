@@ -71,7 +71,7 @@ const Input = ({ expenses, day, data, setData }) => {
         onChange={onChange}
         required
       ></input>
-      <button>submit</button>
+      <button className={style.submit}>submit</button>
     </form>
   );
 };
