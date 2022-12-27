@@ -1,17 +1,21 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import axios from "axios";
-import "./index.css";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
+import axios from "axios";
+
+import App from "./App";
+import "./index.css";
 
 if (localStorage.user) axios.defaults.headers.Authorization = localStorage.user;
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(
+if ("serviceWorker" in navigator) {
+  // register service worker
+  navigator.serviceWorker.register("service-worker.js");
+}
+
+ReactDOM.render(
   <BrowserRouter>
     <App />
-  </BrowserRouter>
+  </BrowserRouter>,
+  document.getElementById("root")
 );
-reportWebVitals();
