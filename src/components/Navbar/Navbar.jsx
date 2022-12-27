@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 
 import style from "./Navbar.module.css";
 
-const Navbar = ({ userLoggedIn, logout }) => {
+const Navbar = ({ userLoggedIn, logout, signin }) => {
   return (
     <nav className={style.navbar}>
       <p>Budget Managment</p>
@@ -22,7 +22,11 @@ const Navbar = ({ userLoggedIn, logout }) => {
       >
         Monthly
       </NavLink>
-      {userLoggedIn && <button onClick={logout}>Logout</button>}
+      {userLoggedIn ? (
+        <button onClick={logout}>Logout</button>
+      ) : (
+        <button onClick={signin}>Signup</button>
+      )}
     </nav>
   );
 };

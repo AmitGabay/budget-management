@@ -33,17 +33,22 @@ const Daily = ({ userLoggedIn, day }) => {
   const dayForward = new Date(changeDay.setDate(changeDay.getDate() + 2));
 
   useEffect(() => {
-    if (!userLoggedIn) return;
-
     const getData = async () => {
-      const { data: expenses } = await axios(
-        `${process.env.REACT_APP_SERVER_URL}/`
-      );
-      setExpenses(expenses);
-      const expense = expenses.find(({ date }) => {
-        const dbDate = new Date(date).toDateString();
-        return dbDate === day.toDateString();
-      });
+      if (userLoggedIn) {
+        const { data: expenses } = await axios(
+          `${process.env.REACT_APP_SERVER_URL}/`
+        );
+        setExpenses(expenses);
+      } else {
+        setExpenses(JSON.parse(localStorage.expenses || "[]"));
+      }
+
+      const expense =
+        expenses &&
+        expenses.find(({ date }) => {
+          const dbDate = new Date(date).toDateString();
+          return dbDate === day.toDateString();
+        });
       setData(expense ? expense.data : []);
     };
 
@@ -55,7 +60,13 @@ const Daily = ({ userLoggedIn, day }) => {
       <h2>Summary of Expenses</h2>
       <h3>{day.toLocaleDateString("de-DE")}</h3>
       <Table columns={columns} data={data} />
-      <Input day={day} expenses={expenses} data={data} setData={setData} />
+      <Input
+        day={day}
+        expenses={expenses}
+        data={data}
+        setData={setData}
+        userLoggedIn={userLoggedIn}
+      />
       <div className={style.flipping}>
         <Link className={style.link} to={`/${dayBack.toISOString()}`}>
           <span>{dayBack.toLocaleDateString("de-DE")}</span>

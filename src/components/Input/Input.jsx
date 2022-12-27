@@ -3,7 +3,7 @@ import axios from "axios";
 
 import style from "./Input.module.css";
 
-const Input = ({ expenses, day, data, setData }) => {
+const Input = ({ expenses, day, data, setData, userLoggedIn }) => {
   const [inputs, setInputs] = useState({
     sum: "",
     card: "",
@@ -21,10 +21,23 @@ const Input = ({ expenses, day, data, setData }) => {
     const updatedData = [...data, inputs];
     setData(updatedData);
     if (!expenses.length) {
-      axios.post(`${process.env.REACT_APP_SERVER_URL}/daily`, {
-        expenses: [{ date: day, data: updatedData }],
-      });
+      const updatedExpenses = [{ date: day, data: updatedData }];
+      userLoggedIn
+        ? axios.post(`${process.env.REACT_APP_SERVER_URL}/daily`, {
+            expenses: updatedExpenses,
+          })
+        : localStorage.setItem("expenses", JSON.stringify(updatedExpenses));
     } else {
+      if (!userLoggedIn) {
+        const expense = expenses.find(({ date }) => {
+          const dbDate = new Date(date).toDateString();
+          return dbDate === day.toDateString();
+        });
+        expense && localStorage.removeItem("expenses", JSON.stringify(expense));
+        const updatedExpenses = [...expenses, { date: day, data: updatedData }];
+        localStorage.setItem("expenses", JSON.stringify(updatedExpenses));
+        return;
+      }
       axios.put(`${process.env.REACT_APP_SERVER_URL}/daily`, {
         date: day,
         data: updatedData,

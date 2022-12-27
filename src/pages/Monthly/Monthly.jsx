@@ -62,20 +62,25 @@ const Monthly = ({ userLoggedIn, day }) => {
   };
 
   useEffect(() => {
-    if (!userLoggedIn) return;
-
     const getData = async () => {
-      const { data: expenses } = await axios(
-        `${process.env.REACT_APP_SERVER_URL}/`
-      );
-      setExpenses(expenses);
-      const expense = expenses
-        .filter(({ date }) => {
-          const dbDate = new Date(date);
-          return dbDate.getMonth() === day.getMonth();
-        })
-        .map(({ data }) => data)
-        .flat();
+      if (userLoggedIn) {
+        const { data: expenses } = await axios(
+          `${process.env.REACT_APP_SERVER_URL}/`
+        );
+        setExpenses(expenses);
+      } else {
+        setExpenses(JSON.parse(localStorage.expenses || "[]"));
+      }
+
+      const expense =
+        expenses &&
+        expenses
+          .filter(({ date }) => {
+            const dbDate = new Date(date);
+            return dbDate.getMonth() === day.getMonth();
+          })
+          .map(({ data }) => data)
+          .flat();
       setData(makeSum(expense, mode.toLowerCase()));
     };
 
