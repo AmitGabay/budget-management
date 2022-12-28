@@ -31,7 +31,6 @@ function App() {
         logout={logout}
         signin={signin}
         login={login}
-        onClick={() => !userLoggedIn && setLogin(false)}
       />
       {login ? (
         <Login setUserLoggedIn={setUserLoggedIn} setLogin={setLogin} />
