@@ -28,12 +28,13 @@ const Daily = ({ userLoggedIn, day }) => {
   if (pick) {
     day = new Date(pick);
   }
+
   const changeDay = new Date(day.toISOString());
   const dayBack = new Date(changeDay.setDate(changeDay.getDate() - 1));
   const dayForward = new Date(changeDay.setDate(changeDay.getDate() + 2));
 
   useEffect(() => {
-    const getData = async () => {
+    const getExpenses = async () => {
       if (userLoggedIn) {
         const { data: expenses } = await axios(
           `${process.env.REACT_APP_SERVER_URL}/`
@@ -42,18 +43,20 @@ const Daily = ({ userLoggedIn, day }) => {
       } else {
         setExpenses(JSON.parse(localStorage.expenses || "[]"));
       }
-
-      const expense =
-        expenses &&
-        expenses.find(({ date }) => {
-          const dbDate = new Date(date).toDateString();
-          return dbDate === day.toDateString();
-        });
-      setData(expense ? expense.data : []);
     };
 
-    getData();
-  }, [userLoggedIn, pick]);
+    getExpenses();
+  }, [userLoggedIn]);
+
+  useEffect(() => {
+    const expense =
+      expenses &&
+      expenses.find(({ date }) => {
+        const dbDate = new Date(date).toDateString();
+        return dbDate === day.toDateString();
+      });
+    setData(expense ? expense.data : []);
+  }, [expenses, pick]);
 
   return (
     <div className={style.container}>

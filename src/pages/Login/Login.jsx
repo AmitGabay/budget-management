@@ -5,7 +5,7 @@ import style from "./Login.module.css";
 
 const [LOGIN, SIGNUP] = ["Login", "Signup"];
 
-const Login = ({ setUserLoggedIn }) => {
+const Login = ({ setUserLoggedIn, setLogin }) => {
   const [mode, setMode] = useState(LOGIN);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -36,6 +36,13 @@ const Login = ({ setUserLoggedIn }) => {
       setUserLoggedIn(true);
       localStorage.setItem("user", data.token);
       if (data.token) axios.defaults.headers.Authorization = data.token;
+      setLogin(false);
+      if (mode === SIGNUP && localStorage.getItem("expenses")) {
+        await axios.post(`${process.env.REACT_APP_SERVER_URL}/daily`, {
+          expenses: JSON.parse(localStorage.getItem("expenses")),
+        });
+        localStorage.removeItem("expenses");
+      }
     } catch ({ response }) {
       if (response.status === 409) {
         alert("This email is already registered!");

@@ -1,6 +1,6 @@
 {
   "short_name": "Budget Managment",
-  "name": "Budget Managment App By Amit",
+  "name": "Budget Managment App",
   "start_url": "index.html",
   "scope": "./",
   "icons": [
@@ -10,7 +10,7 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logo.png",
+      "src": "shekel.png",
       "type": "image/png",
       "sizes": "192x192"
     },
