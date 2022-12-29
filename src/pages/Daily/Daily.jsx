@@ -65,6 +65,7 @@ const Daily = ({ userLoggedIn }) => {
       <Input
         day={day}
         expenses={expenses}
+        setExpenses={setExpenses}
         data={data}
         setData={setData}
         userLoggedIn={userLoggedIn}
