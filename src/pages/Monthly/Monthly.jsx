@@ -25,17 +25,19 @@ const makeSum = (expenses, mode) => {
 const Monthly = ({ userLoggedIn, day }) => {
   const { pick } = useParams();
   if (pick) {
-    day = new Date(`${pick} "1, 2022"`);
+    day = new Date(`${pick} "1"`);
   }
-  // const changeMonth = new Date(day).setMonth(day.getMonth() - 1);
-  const monthBack = new Intl.DateTimeFormat("en-US", { month: "long" }).format(
-    new Date(day).setMonth(day.getMonth() - 1)
-  );
+
+  const monthBack = new Intl.DateTimeFormat("en-US", {
+    month: "long",
+    year: "numeric",
+  }).format(new Date(day).setMonth(day.getMonth() - 1));
   const monthForward = new Intl.DateTimeFormat("en-US", {
     month: "long",
+    year: "numeric",
   }).format(new Date(day).setMonth(day.getMonth() + 1));
 
-  const option = { month: "long" };
+  const option = { month: "long", year: "numeric" };
   const month = new Intl.DateTimeFormat("en-US", option).format(day);
 
   const [data, setData] = useState([]);
@@ -82,7 +84,10 @@ const Monthly = ({ userLoggedIn, day }) => {
       expenses
         .filter(({ date }) => {
           const dbDate = new Date(date);
-          return dbDate.getMonth() === day.getMonth();
+          return (
+            dbDate.getMonth() === day.getMonth() &&
+            dbDate.getYear() === day.getYear()
+          );
         })
         .map(({ data }) => data)
         .flat();

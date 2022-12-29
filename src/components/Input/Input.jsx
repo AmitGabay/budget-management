@@ -12,7 +12,13 @@ const Input = ({ expenses, day, data, setData, userLoggedIn }) => {
 
   const onChange = (event) => {
     const { name, value } = event.target;
-    setInputs((prevState) => ({ ...prevState, [name]: value }));
+    const capValue =
+      value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+
+    setInputs((prevState) => ({
+      ...prevState,
+      [name]: capValue,
+    }));
   };
   const onSubmit = () => {
     if (!inputs.sum.length || !inputs.card.length || !inputs.category.length)

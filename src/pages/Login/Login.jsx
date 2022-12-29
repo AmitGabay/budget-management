@@ -1,14 +1,17 @@
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 import style from "./Login.module.css";
 
 const [LOGIN, SIGNUP] = ["Login", "Signup"];
 
-const Login = ({ setUserLoggedIn, setLogin }) => {
+const Login = ({ setUserLoggedIn }) => {
   const [mode, setMode] = useState(LOGIN);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
 
   const changeMode = () => {
     mode === LOGIN ? setMode(SIGNUP) : setMode(LOGIN);
@@ -36,13 +39,14 @@ const Login = ({ setUserLoggedIn, setLogin }) => {
       setUserLoggedIn(true);
       localStorage.setItem("user", data.token);
       if (data.token) axios.defaults.headers.Authorization = data.token;
-      setLogin(false);
+
       if (mode === SIGNUP && localStorage.getItem("expenses")) {
         await axios.post(`${process.env.REACT_APP_SERVER_URL}/daily`, {
           expenses: JSON.parse(localStorage.getItem("expenses")),
         });
         localStorage.removeItem("expenses");
       }
+      navigate("/");
     } catch ({ response }) {
       if (response.status === 409) {
         alert("This email is already registered!");

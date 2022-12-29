@@ -1,6 +1,6 @@
 import { useTable, useSortBy } from "react-table";
 
-import "./Table.module.css";
+import style from "./Table.module.css";
 
 function Table({ columns, data }) {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
@@ -18,7 +18,10 @@ function Table({ columns, data }) {
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+              <th
+                {...column.getHeaderProps(column.getSortByToggleProps())}
+                className={`${!data.length ? style.noUnderline : ""}`}
+              >
                 {column.render("Header")}
                 <span>
                   {column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : ""}
