@@ -7,10 +7,7 @@ import Login from "./pages/Login/Login";
 import Daily from "./pages/Daily/Daily";
 import Monthly from "./pages/Monthly/Monthly";
 
-import "./App.module.css";
-
-function App() {
-  const day = new Date();
+const App = () => {
   const [userLoggedIn, setUserLoggedIn] = useState(Boolean(localStorage.user));
 
   const logout = () => {
@@ -20,29 +17,31 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <>
       <Navbar userLoggedIn={userLoggedIn} logout={logout} />
+
       <Routes>
         <Route
           path="/login"
           element={<Login setUserLoggedIn={setUserLoggedIn} />}
         />
-        <Route
-          path="/"
-          element={<Daily userLoggedIn={userLoggedIn} day={day} />}
-        />
+
+        <Route path="/" element={<Daily userLoggedIn={userLoggedIn} />} />
+
         <Route
           path="/month"
-          element={<Monthly userLoggedIn={userLoggedIn} day={day} />}
+          element={<Monthly userLoggedIn={userLoggedIn} />}
         />
+
         <Route path="/:pick" element={<Daily userLoggedIn={userLoggedIn} />} />
+
         <Route
           path="/month/:pick"
           element={<Monthly userLoggedIn={userLoggedIn} />}
         />
       </Routes>
-    </div>
+    </>
   );
-}
+};
 
 export default App;

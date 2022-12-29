@@ -1,6 +1,6 @@
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 import style from "./Login.module.css";
 
@@ -13,20 +13,9 @@ const Login = ({ setUserLoggedIn }) => {
 
   const navigate = useNavigate();
 
-  const changeMode = () => {
-    mode === LOGIN ? setMode(SIGNUP) : setMode(LOGIN);
-  };
-
-  const typeEmail = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const typePassword = (event) => {
-    setPassword(event.target.value);
-  };
-
   const onSubmit = async (event) => {
     event.preventDefault();
+
     try {
       const { data } = await axios.post(
         `${process.env.REACT_APP_SERVER_URL}/${mode}`,
@@ -36,6 +25,7 @@ const Login = ({ setUserLoggedIn }) => {
           password,
         }
       );
+
       setUserLoggedIn(true);
       localStorage.setItem("user", data.token);
       if (data.token) axios.defaults.headers.Authorization = data.token;
@@ -46,13 +36,14 @@ const Login = ({ setUserLoggedIn }) => {
         });
         localStorage.removeItem("expenses");
       }
+
       navigate("/");
     } catch ({ response }) {
       if (response.status === 409) {
         alert("This email is already registered!");
       } else if (response.status === 403) {
         alert("Incorrect email or password. Try again!");
-      }
+      } else alert("An error occured. Please try again!");
     }
   };
 
@@ -73,7 +64,7 @@ const Login = ({ setUserLoggedIn }) => {
             value={email}
             name="email"
             required
-            onChange={typeEmail}
+            onChange={(event) => setEmail(event.target.value)}
           />
 
           <input
@@ -84,7 +75,7 @@ const Login = ({ setUserLoggedIn }) => {
             name="psw"
             minLength="8"
             required
-            onChange={typePassword}
+            onChange={(event) => setPassword(event.target.value)}
           />
 
           <button className={style.btn} type="submit">
@@ -94,7 +85,11 @@ const Login = ({ setUserLoggedIn }) => {
 
         <div className={style.signup}>
           <h4>{mode === LOGIN ? "Not a member?" : "Already a member?"}</h4>
-          <button className={style.link} onClick={changeMode}>
+
+          <button
+            className={style.link}
+            onClick={() => setMode(mode === LOGIN ? SIGNUP : LOGIN)}
+          >
             {mode === LOGIN ? "Signup now" : LOGIN}
           </button>
         </div>

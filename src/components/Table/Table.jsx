@@ -23,6 +23,7 @@ function Table({ columns, data }) {
                 className={`${!data.length ? style.noUnderline : ""}`}
               >
                 {column.render("Header")}
+
                 <span>
                   {column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : ""}
                 </span>
@@ -31,14 +32,16 @@ function Table({ columns, data }) {
           </tr>
         ))}
       </thead>
+
       <tbody {...getTableBodyProps()}>
-        {rows.map((row, i) => {
+        {rows.map((row) => {
           prepareRow(row);
+
           return (
             <tr {...row.getRowProps()}>
-              {row.cells.map((cell) => {
-                return <td {...cell.getCellProps()}>{cell.render("Cell")}</td>;
-              })}
+              {row.cells.map((cell) => (
+                <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+              ))}
             </tr>
           );
         })}

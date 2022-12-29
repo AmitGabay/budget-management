@@ -20,14 +20,18 @@ const Input = ({ expenses, day, data, setData, userLoggedIn }) => {
       [name]: capValue,
     }));
   };
+
   const onSubmit = () => {
     if (!inputs.sum.length || !inputs.card.length || !inputs.category.length)
       return;
 
     const updatedData = [...data, inputs];
+
     setData(updatedData);
+
     if (!expenses.length) {
       const updatedExpenses = [{ date: day, data: updatedData }];
+
       userLoggedIn
         ? axios.post(`${process.env.REACT_APP_SERVER_URL}/daily`, {
             expenses: updatedExpenses,
@@ -39,16 +43,23 @@ const Input = ({ expenses, day, data, setData, userLoggedIn }) => {
           const dbDate = new Date(date).toDateString();
           return dbDate === day.toDateString();
         });
-        expense && localStorage.removeItem("expenses", JSON.stringify(expense));
-        const updatedExpenses = [...expenses, { date: day, data: updatedData }];
-        localStorage.setItem("expenses", JSON.stringify(updatedExpenses));
-        return;
+
+        if (expense) {
+          localStorage.removeItem("expenses", JSON.stringify(expense));
+        }
+
+        return localStorage.setItem(
+          "expenses",
+          JSON.stringify([...expenses, { date: day, data: updatedData }])
+        );
       }
+
       axios.put(`${process.env.REACT_APP_SERVER_URL}/daily`, {
         date: day,
         data: updatedData,
       });
     }
+
     setInputs({
       sum: "",
       card: "",
@@ -60,9 +71,7 @@ const Input = ({ expenses, day, data, setData, userLoggedIn }) => {
     <form
       className={style.inputs}
       onKeyDown={(e) => {
-        if (e.keyCode === 13) {
-          onSubmit();
-        }
+        if (e.keyCode === 13) onSubmit();
       }}
       onSubmit={(e) => e.preventDefault()}
     >
@@ -73,7 +82,8 @@ const Input = ({ expenses, day, data, setData, userLoggedIn }) => {
         placeholder="Sum"
         onChange={onChange}
         required
-      ></input>
+      />
+
       <input
         type="text"
         name="card"
@@ -81,7 +91,8 @@ const Input = ({ expenses, day, data, setData, userLoggedIn }) => {
         placeholder="Card"
         onChange={onChange}
         required
-      ></input>
+      />
+
       <input
         type="text"
         name="category"
@@ -89,7 +100,8 @@ const Input = ({ expenses, day, data, setData, userLoggedIn }) => {
         placeholder="Category"
         onChange={onChange}
         required
-      ></input>
+      />
+
       <button className={style.submit}>submit</button>
     </form>
   );

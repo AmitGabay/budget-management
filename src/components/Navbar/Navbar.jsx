@@ -6,6 +6,7 @@ const Navbar = ({ userLoggedIn, logout }) => {
   return (
     <nav className={style.navbar}>
       <p>Budget Managment</p>
+
       <NavLink
         to={"/"}
         className={({ isActive }) =>
@@ -14,6 +15,7 @@ const Navbar = ({ userLoggedIn, logout }) => {
       >
         Daily
       </NavLink>
+
       <NavLink
         to={"/month"}
         className={({ isActive }) =>
@@ -22,6 +24,7 @@ const Navbar = ({ userLoggedIn, logout }) => {
       >
         Monthly
       </NavLink>
+
       {userLoggedIn ? (
         <button className={style.btn} onClick={logout}>
           Logout

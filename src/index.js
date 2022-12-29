@@ -9,19 +9,13 @@ import "./index.css";
 if (localStorage.user) axios.defaults.headers.Authorization = localStorage.user;
 
 if ("serviceWorker" in navigator) {
-  // register service worker
   navigator.serviceWorker.register("service-worker.js");
 }
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
 root.render(
   <BrowserRouter>
-    <App />{" "}
+    <App />
   </BrowserRouter>
 );
-// ReactDOM.render(
-//   <BrowserRouter>
-//     <App />
-//   </BrowserRouter>,
-//   document.getElementById("root")
-// );
