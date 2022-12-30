@@ -10,6 +10,15 @@ const Input = ({ expenses, setExpenses, day, data, userLoggedIn }) => {
     category: "",
   });
 
+  const onKeyDown = (event) => {
+    const {
+      keyCode,
+      target: { value },
+    } = event;
+
+    if (!value && keyCode === 32) event.preventDefault();
+  };
+
   const onChange = (event) => {
     const { name, value } = event.target;
     const capValue =
@@ -85,6 +94,7 @@ const Input = ({ expenses, setExpenses, day, data, userLoggedIn }) => {
         name="card"
         value={inputs.card}
         placeholder="Card"
+        onKeyDown={onKeyDown}
         onChange={onChange}
         required
       />
@@ -94,6 +104,7 @@ const Input = ({ expenses, setExpenses, day, data, userLoggedIn }) => {
         name="category"
         value={inputs.category}
         placeholder="Category"
+        onKeyDown={onKeyDown}
         onChange={onChange}
         required
       />
