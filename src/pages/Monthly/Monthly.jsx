@@ -9,7 +9,7 @@ const makeSum = (expenses, mode) => {
   const cardsMap = expenses.reduce((acc, expense) => {
     if (acc[expense[mode]]) acc[expense[mode]] += expense.sum;
     else acc[expense[mode]] = expense.sum;
-
+    console.log(acc);
     return acc;
   }, {});
 

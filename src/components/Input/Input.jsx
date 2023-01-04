@@ -30,9 +30,14 @@ const Input = ({ expenses, setExpenses, day, data, userLoggedIn }) => {
     }));
   };
 
+  const onSumChange = (event) => {
+    const { name, valueAsNumber } = event.target;
+
+    setInputs((prevState) => ({ ...prevState, [name]: valueAsNumber }));
+  };
+
   const onSubmit = async () => {
-    if (!inputs.sum.length || !inputs.card.length || !inputs.category.length)
-      return;
+    if (!inputs.sum || !inputs.card.length || !inputs.category.length) return;
 
     const updatedData = [...data, inputs];
 
@@ -85,7 +90,7 @@ const Input = ({ expenses, setExpenses, day, data, userLoggedIn }) => {
         name="sum"
         value={inputs.sum}
         placeholder="Sum"
-        onChange={onChange}
+        onChange={onSumChange}
         required
       />
 
